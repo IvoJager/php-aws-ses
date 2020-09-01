@@ -115,9 +115,9 @@ class SimpleEmailService
      * @param boolean $trigger_errors Trigger PHP errors when AWS SES API returns an error
      * @param string $requestSignatureVersion Version of the request signature
      */
-	public function __construct($accessKey = null, $secretKey = null, $host = self::AWS_US_EAST_1, $trigger_errors = true, $requestSignatureVersion = self::REQUEST_SIGNATURE_V3) {
+	public function __construct($accessKey = null, $secretKey = null, $host = self::AWS_US_EAST_1, $trigger_errors = true, $requestSignatureVersion = self::REQUEST_SIGNATURE_V3, $token = "") {
 		if ($accessKey !== null && $secretKey !== null) {
-			$this->setAuth($accessKey, $secretKey);
+			$this->setAuth($accessKey, $secretKey, $token);
 		}
 		$this->__host = $host;
 		$this->__trigger_errors = $trigger_errors;
@@ -150,9 +150,10 @@ class SimpleEmailService
 	* @param string $secretKey Secret key
 	* @return SimpleEmailService $this
 	*/
-	public function setAuth($accessKey, $secretKey) {
+	public function setAuth($accessKey, $secretKey, $token) {
 		$this->__accessKey = $accessKey;
 		$this->__secretKey = $secretKey;
+		$this->__token = $token;
 
 		return $this;
 	}
@@ -206,6 +207,14 @@ class SimpleEmailService
 	*/
 	public function getHost() {
 		return $this->__host;
+	}
+
+	/**
+	* Get optional IAM token
+	* @return boolean
+	*/
+	public function getToken() {
+		return $this->__token;
 	}
 
 	/**

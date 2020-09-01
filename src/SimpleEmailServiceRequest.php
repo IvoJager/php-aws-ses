@@ -4,7 +4,7 @@
 *
 * @link https://github.com/daniel-zahariev/php-aws-ses
 * @package AmazonSimpleEmailService
-* @version v0.9.1
+* @version v0.9.2
 */
 class SimpleEmailServiceRequest
 {
@@ -224,6 +224,9 @@ class SimpleEmailServiceRequest
             $headers[] = 'Host: ' . $this->ses->getHost();
             $headers[] = 'Authorization: ' . $this->__getAuthHeaderV4($date, $query);
 
+		if ($this->ses->getToken() != "")
+			$headers[] = 'X-AMZ-Security-Token: ' . $this->ses->getToken();
+
         } else {
             // must be in format 'Sun, 06 Nov 1994 08:49:37 GMT'
             $date = gmdate('D, d M Y H:i:s e');
@@ -233,6 +236,9 @@ class SimpleEmailServiceRequest
             $headers[] = 'Date: ' . $date;
             $headers[] = 'Host: ' . $this->ses->getHost();
             $headers[] = 'X-Amzn-Authorization: ' . $auth;
+
+		if ($this->ses->getToken() != "")
+			$headers[] = 'X-AMZ-Security-Token: ' . $this->ses->getToken();
         }
 
         return $headers;
